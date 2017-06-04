@@ -28,6 +28,7 @@ unsigned int  tick100ms = 0;
 unsigned char blinkFlag = 0;
 unsigned char blinkOn = 0;
 unsigned char blinkOff = 0;
+unsigned char KeyLock = 0;
 void main(void)
 {
   WDTCTL = WDTPW + WDTHOLD;
@@ -272,7 +273,7 @@ void Buttom1Pros(void)
     break;
     
   case 2:
-      if(key0to3 == 0xFF)
+      if((key0to3 == 0xFF) && (KeyLock == 0))
       {
         if((lastkey1 == 0xFE) || (lastkey1 == 0xFB) || (lastkey1 == 0xEF) || (lastkey1 == 0xBF))
         {
@@ -342,7 +343,7 @@ void Buttom2Pros(void)
     break;
     
   case 2:
-      if(key4to7 == 0xFF)
+      if((key4to7 == 0xFF) && (KeyLock == 0))
       {
         if((lastkey2 == 0xFE) || (lastkey2 == 0xFB) || (lastkey2 == 0xEF) || (lastkey2 == 0xBF))
         {
@@ -397,7 +398,7 @@ void Buttom3Pros(void)
     break;
     
   case 2:
-      if(key8to9 == 0xFF)
+      if((key8to9 == 0xFF)  && (KeyLock == 0))
       {
         if((lastkey3 == 0xFE))
         {
@@ -458,7 +459,7 @@ void Buttom4Pros(void)
     break;
     
   case 2:
-      if(key10to11 == 0xFF)
+      if((key10to11 == 0xFF) && (KeyLock == 0))
       {
         if(lastkey4 == 0xEF)
         {
@@ -624,6 +625,7 @@ void SendData(void)
         while (!(UCA0IFG&UCTXIFG));             // USCI_A0 TX buffer ready?
         UCA0TXBUF = sendd[i];                  // TX -> RXed character
       }
+      KeyLock = 1;
       sendstep = 5;
       break;
       
@@ -658,6 +660,7 @@ void SendData(void)
         blinkOn = 0;
         blinkOff = 0;
         blinkcon = 0;
+        KeyLock = 0;
         sendstep = 1;
       }
       break;

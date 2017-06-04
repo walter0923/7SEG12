@@ -26,7 +26,8 @@ unsigned char Uindex = 0, uart_step = 1, checksum = 0x00;
 unsigned char mStep = 1;
 unsigned int  tick100ms = 0;
 unsigned char blinkFlag = 0;
-
+unsigned char blinkOn = 0;
+unsigned char blinkOff = 0;
 void main(void)
 {
   WDTCTL = WDTPW + WDTHOLD;
@@ -70,12 +71,13 @@ void LEDIni(void)
   P9SEL &= ~(BIT6 | BIT5 | BIT4 | BIT3 | BIT2 | BIT1 | BIT0);
   
   P2DIR &= ~(BIT6 | BIT7);
+  P2REN |= (BIT6 | BIT7);
   P2DIR |= (BIT0 | BIT1 | BIT2);
   P4DIR |= (BIT5 | BIT4 | BIT3 | BIT2 | BIT1 | BIT0); //scan line
   P8DIR |= (BIT7 | BIT6 | BIT5 | BIT4 | BIT3 | BIT2 | BIT1 | BIT0); //digit
   P9DIR |= (BIT7 | BIT6 | BIT5 | BIT4 | BIT3 | BIT2 | BIT1 | BIT0); //ten digit
 
-  P2OUT |= (BIT0 | BIT1 | BIT2);
+  P2OUT |= (BIT0 | BIT1 | BIT2 | BIT6);
   P4OUT &= ~(BIT5 | BIT4 | BIT3 | BIT2 | BIT1 | BIT0);
   P8OUT = (BIT6 | BIT5 | BIT4 | BIT3 | BIT2 | BIT1 | BIT0);
   P9OUT = (BIT6 | BIT5 | BIT4 | BIT3 | BIT2 | BIT1 | BIT0);
@@ -626,23 +628,35 @@ void SendData(void)
       break;
       
     case 5:
-      if(blinkcon < 15)
+      if(blinkcon < 30)
       {
         if(blinkFlag)
         {
           P2OUT &= ~BIT2;
-          blinkcon ++;
+          blinkOn ++;
+          
         }
         
         else
         {
           P2OUT |= BIT2;
+          blinkOff ++;
+        }
+        
+        if((blinkOn > 0) && (blinkOff > 0))
+        {
+          blinkOn = 0;
+          blinkOff = 0;
+          blinkcon ++;
         }
       }
       
       else
       {
+        P2OUT |= BIT2;
         ClearData();
+        blinkOn = 0;
+        blinkOff = 0;
         blinkcon = 0;
         sendstep = 1;
       }
@@ -662,12 +676,11 @@ __interrupt void TIMER_ISR(void)
     tick100ms ++;
     systick = 0;
   }
-  
-  if(tick100ms >= 2)
+    
+  else if(tick100ms >= 2)
   {
     blinkFlag ^= 1;
     tick100ms = 0;
-    SwitchINOUT();
   }
   switch(mStep)
   {

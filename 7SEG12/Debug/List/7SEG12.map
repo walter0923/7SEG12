@@ -2,7 +2,7 @@
 #                                                                              #
 #      IAR Universal Linker V6.5.0.91                                          #
 #                                                                              #
-#           Link time     =  04/Jun/2017  15:01:50                             #
+#           Link time     =  04/Jun/2017  16:05:40                             #
 #           Target CPU    =  MSP430                                            #
 #           List file     =  "D:\IAR Systems\7SEG12\Debug\List\7SEG12.map"     #
 #           Output file 1 =  "D:\IAR Systems\7SEG12\Debug\Exe\7SEG12.d43"      #
@@ -10,7 +10,7 @@
 #                            UBROF version 10.0.6                              #
 #                            Using library modules for C-SPY (-rt)             #
 #           Command line  =  -f                                                #
-#                            C:\Users\Walter\AppData\Local\Temp\EW51A1.tmp     #
+#                            C:\Users\Walter\AppData\Local\Temp\EWC105.tmp     #
 #                            ("D:\IAR Systems\7SEG12\Debug\Obj\main.r43" -o    #
 #                            "D:\IAR Systems\7SEG12\Debug\Exe\7SEG12.d43" -l   #
 #                            "D:\IAR Systems\7SEG12\Debug\List\7SEG12.map"     #
@@ -173,6 +173,7 @@ DATA16_AN
 DATA16_AN
   Relative segment, address: 0206 - 0207 (0x2 bytes), align: 0
   Segment part 4. ROOT        Intra module refs:   ButtomIni
+                                                   LEDIni
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            _A_PAREN_L              0206 
@@ -590,114 +591,128 @@ DATA16_Z
            =====                   =======         ======
            blinkFlag               1C48 
     -------------------------------------------------------------------------
-<CODE> 1 (was CODE)
-  Relative segment, address: 664C - 666B (0x20 bytes), align: 1
-  Segment part 81.
+DATA16_Z
+  Relative segment, address: 1C49 - 1C49 (0x1 bytes), align: 0
+  Segment part 51.            Intra module refs:   SendData
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           main                    664C            Segment part 26 (?cstart)
+           blinkOn                 1C49 
+    -------------------------------------------------------------------------
+DATA16_Z
+  Relative segment, address: 1C4A - 1C4A (0x1 bytes), align: 0
+  Segment part 52.            Intra module refs:   SendData
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           blinkOff                1C4A 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6678 - 6697 (0x20 bytes), align: 1
+  Segment part 83.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           main                    6678            Segment part 26 (?cstart)
                calls direct
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 6624 - 664B (0x28 bytes), align: 1
-  Segment part 77.            Intra module refs:   main
-           ENTRY                   ADDRESS         REF BY
-           =====                   =======         ======
-           UARTIni                 6624 
-    -------------------------------------------------------------------------
-<CODE> 1 (was CODE)
-  Relative segment, address: 6684 - 6697 (0x14 bytes), align: 1
-  Segment part 80.            Intra module refs:   main
-           ENTRY                   ADDRESS         REF BY
-           =====                   =======         ======
-           TimerIni                6684 
-    -------------------------------------------------------------------------
-<CODE> 1 (was CODE)
-  Relative segment, address: 6576 - 65D5 (0x60 bytes), align: 1
+  Relative segment, address: 6650 - 6677 (0x28 bytes), align: 1
   Segment part 79.            Intra module refs:   main
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           LEDIni                  6576 
+           UARTIni                 6650 
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 6512 - 6575 (0x64 bytes), align: 1
-  Segment part 82.            Intra module refs:   TIMER_ISR
+  Relative segment, address: 66B0 - 66C3 (0x14 bytes), align: 1
+  Segment part 82.            Intra module refs:   main
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           OpenShow                6512 
-               calls direct
+           TimerIni                66B0 
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 6030 - 6139 (0x10a bytes), align: 1
-  Segment part 83.            Intra module refs:   TIMER_ISR
+  Relative segment, address: 6538 - 659D (0x66 bytes), align: 1
+  Segment part 81.            Intra module refs:   main
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           BlinkShow               6030 
-               calls direct
+           LEDIni                  6538 
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 6480 - 6511 (0x92 bytes), align: 1
+  Relative segment, address: 659E - 6601 (0x64 bytes), align: 1
   Segment part 84.            Intra module refs:   TIMER_ISR
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           LEDShow                 6480 
+           OpenShow                659E 
                calls direct
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 65D6 - 6623 (0x4e bytes), align: 1
-  Segment part 78.            Intra module refs:   main
-           ENTRY                   ADDRESS         REF BY
-           =====                   =======         ======
-           ButtomIni               65D6 
-    -------------------------------------------------------------------------
-<CODE> 1 (was CODE)
-  Relative segment, address: 5F08 - 602F (0x128 bytes), align: 1
+  Relative segment, address: 614C - 6255 (0x10a bytes), align: 1
   Segment part 85.            Intra module refs:   TIMER_ISR
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Buttom1Pros             5F08 
+           BlinkShow               614C 
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 64A6 - 6537 (0x92 bytes), align: 1
+  Segment part 86.            Intra module refs:   TIMER_ISR
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           LEDShow                 64A6 
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6602 - 664F (0x4e bytes), align: 1
+  Segment part 80.            Intra module refs:   main
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ButtomIni               6602 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5F06 - 602D (0x128 bytes), align: 1
+  Segment part 87.            Intra module refs:   TIMER_ISR
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           Buttom1Pros             5F06 
                calls direct
     -------------------------------------------------------------------------
 DATA16_I
   Relative segment, address: 1C1A - 1C1A (0x1 bytes), align: 0
-  Segment part 51.            Intra module refs:   Buttom1Pros
+  Segment part 53.            Intra module refs:   Buttom1Pros
            LOCAL                   ADDRESS         
            =====                   =======         
            Buttom1Pros::lastkey1   1C1A 
     -------------------------------------------------------------------------
 DATA16_I
   Relative segment, address: 1C1B - 1C1B (0x1 bytes), align: 0
-  Segment part 53.            Intra module refs:   Buttom1Pros
+  Segment part 55.            Intra module refs:   Buttom1Pros
            LOCAL                   ADDRESS         
            =====                   =======         
            Buttom1Pros::key_step1
                                    1C1B 
     -------------------------------------------------------------------------
 DATA16_Z
-  Relative segment, address: 1C49 - 1C49 (0x1 bytes), align: 0
-  Segment part 55.            Intra module refs:   Buttom1Pros
+  Relative segment, address: 1C4B - 1C4B (0x1 bytes), align: 0
+  Segment part 57.            Intra module refs:   Buttom1Pros
            LOCAL                   ADDRESS         
            =====                   =======         
-           Buttom1Pros::index1     1C49 
+           Buttom1Pros::index1     1C4B 
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 5DDC - 5F07 (0x12c bytes), align: 1
-  Segment part 86.            Intra module refs:   TIMER_ISR
+  Relative segment, address: 5DDA - 5F05 (0x12c bytes), align: 1
+  Segment part 88.            Intra module refs:   TIMER_ISR
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Buttom2Pros             5DDC 
+           Buttom2Pros             5DDA 
                calls direct
     -------------------------------------------------------------------------
 DATA16_I
   Relative segment, address: 1C1C - 1C1C (0x1 bytes), align: 0
-  Segment part 56.            Intra module refs:   Buttom2Pros
+  Segment part 58.            Intra module refs:   Buttom2Pros
            LOCAL                   ADDRESS         
            =====                   =======         
            Buttom2Pros::lastkey2   1C1C 
     -------------------------------------------------------------------------
 DATA16_I
   Relative segment, address: 1C1D - 1C1D (0x1 bytes), align: 0
-  Segment part 58.            Intra module refs:   Buttom2Pros
+  Segment part 60.            Intra module refs:   Buttom2Pros
            LOCAL                   ADDRESS         
            =====                   =======         
            Buttom2Pros::key_step2
@@ -705,29 +720,29 @@ DATA16_I
     -------------------------------------------------------------------------
 DATA16_I
   Relative segment, address: 1C1E - 1C1E (0x1 bytes), align: 0
-  Segment part 60.            Intra module refs:   Buttom2Pros
+  Segment part 62.            Intra module refs:   Buttom2Pros
            LOCAL                   ADDRESS         
            =====                   =======         
            Buttom2Pros::index2     1C1E 
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 63DE - 647F (0xa2 bytes), align: 1
-  Segment part 87.            Intra module refs:   TIMER_ISR
+  Relative segment, address: 6404 - 64A5 (0xa2 bytes), align: 1
+  Segment part 89.            Intra module refs:   TIMER_ISR
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Buttom3Pros             63DE 
+           Buttom3Pros             6404 
                calls direct
     -------------------------------------------------------------------------
 DATA16_I
   Relative segment, address: 1C1F - 1C1F (0x1 bytes), align: 0
-  Segment part 62.            Intra module refs:   Buttom3Pros
+  Segment part 64.            Intra module refs:   Buttom3Pros
            LOCAL                   ADDRESS         
            =====                   =======         
            Buttom3Pros::lastkey3   1C1F 
     -------------------------------------------------------------------------
 DATA16_I
   Relative segment, address: 1C20 - 1C20 (0x1 bytes), align: 0
-  Segment part 64.            Intra module refs:   Buttom3Pros
+  Segment part 66.            Intra module refs:   Buttom3Pros
            LOCAL                   ADDRESS         
            =====                   =======         
            Buttom3Pros::key_step3
@@ -735,29 +750,29 @@ DATA16_I
     -------------------------------------------------------------------------
 DATA16_I
   Relative segment, address: 1C21 - 1C21 (0x1 bytes), align: 0
-  Segment part 66.            Intra module refs:   Buttom3Pros
+  Segment part 68.            Intra module refs:   Buttom3Pros
            LOCAL                   ADDRESS         
            =====                   =======         
            Buttom3Pros::index3     1C21 
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 6230 - 631B (0xec bytes), align: 1
-  Segment part 88.            Intra module refs:   TIMER_ISR
+  Relative segment, address: 6256 - 6341 (0xec bytes), align: 1
+  Segment part 90.            Intra module refs:   TIMER_ISR
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Buttom4Pros             6230 
+           Buttom4Pros             6256 
                calls direct
     -------------------------------------------------------------------------
 DATA16_I
   Relative segment, address: 1C22 - 1C22 (0x1 bytes), align: 0
-  Segment part 68.            Intra module refs:   Buttom4Pros
+  Segment part 70.            Intra module refs:   Buttom4Pros
            LOCAL                   ADDRESS         
            =====                   =======         
            Buttom4Pros::lastkey4   1C22 
     -------------------------------------------------------------------------
 DATA16_I
   Relative segment, address: 1C23 - 1C23 (0x1 bytes), align: 0
-  Segment part 70.            Intra module refs:   Buttom4Pros
+  Segment part 72.            Intra module refs:   Buttom4Pros
            LOCAL                   ADDRESS         
            =====                   =======         
            Buttom4Pros::key_step4
@@ -765,52 +780,52 @@ DATA16_I
     -------------------------------------------------------------------------
 DATA16_I
   Relative segment, address: 1C24 - 1C24 (0x1 bytes), align: 0
-  Segment part 72.            Intra module refs:   Buttom4Pros
+  Segment part 74.            Intra module refs:   Buttom4Pros
            LOCAL                   ADDRESS         
            =====                   =======         
            Buttom4Pros::index4     1C24 
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 66AC - 66BF (0x14 bytes), align: 1
-  Segment part 89.            Intra module refs:   SendData
+  Relative segment, address: 66D8 - 66EB (0x14 bytes), align: 1
+  Segment part 91.            Intra module refs:   SendData
                                                    SwitchINOUT
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           ClearData               66AC 
+           ClearData               66D8 
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 631C - 63DD (0xc2 bytes), align: 1
-  Segment part 90.            Intra module refs:   TIMER_ISR
+  Relative segment, address: 6342 - 6403 (0xc2 bytes), align: 1
+  Segment part 92.            Intra module refs:   TIMER_ISR
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           SwitchINOUT             631C 
+           SwitchINOUT             6342 
                calls direct
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 613A - 622F (0xf6 bytes), align: 1
-  Segment part 91.            Intra module refs:   TIMER_ISR
+  Relative segment, address: 602E - 614B (0x11e bytes), align: 1
+  Segment part 93.            Intra module refs:   TIMER_ISR
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           SendData                613A 
+           SendData                602E 
                calls direct
     -------------------------------------------------------------------------
 DATA16_I
   Relative segment, address: 1C25 - 1C25 (0x1 bytes), align: 0
-  Segment part 74.            Intra module refs:   SendData
+  Segment part 76.            Intra module refs:   SendData
            LOCAL                   ADDRESS         
            =====                   =======         
            SendData::sendstep      1C25 
     -------------------------------------------------------------------------
 DATA16_Z
-  Relative segment, address: 1C4A - 1C4A (0x1 bytes), align: 0
-  Segment part 76.            Intra module refs:   SendData
+  Relative segment, address: 1C4C - 1C4C (0x1 bytes), align: 0
+  Segment part 78.            Intra module refs:   SendData
            LOCAL                   ADDRESS         
            =====                   =======         
-           SendData::blinkcon      1C4A 
+           SendData::blinkcon      1C4C 
     -------------------------------------------------------------------------
 ISR_CODE
-  Relative segment, address: 5C4E - 5CC7 (0x7a bytes), align: 1
-  Segment part 92.            Intra module refs:   TIMER_ISR::??INTVEC 98
+  Relative segment, address: 5C4E - 5CC5 (0x78 bytes), align: 1
+  Segment part 94.            Intra module refs:   TIMER_ISR::??INTVEC 98
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIMER_ISR               5C4E 
@@ -818,11 +833,11 @@ ISR_CODE
                calls direct
     -------------------------------------------------------------------------
 ISR_CODE
-  Relative segment, address: 5CC8 - 5DDB (0x114 bytes), align: 1
-  Segment part 93.            Intra module refs:   USCI_A0_ISR::??INTVEC 114
+  Relative segment, address: 5CC6 - 5DD9 (0x114 bytes), align: 1
+  Segment part 95.            Intra module refs:   USCI_A0_ISR::??INTVEC 114
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           USCI_A0_ISR             5CC8 
+           USCI_A0_ISR             5CC6 
                interrupt function
     -------------------------------------------------------------------------
 INTVEC
@@ -859,51 +874,51 @@ DATA16_ID
     -------------------------------------------------------------------------
 DATA16_ID
   Relative segment, address: 5C1A - 5C1A (0x1 bytes), align: 0
-  Segment part 52.            Intra module refs:   Buttom1Pros::lastkey1
+  Segment part 54.            Intra module refs:   Buttom1Pros::lastkey1
     -------------------------------------------------------------------------
 DATA16_ID
   Relative segment, address: 5C1B - 5C1B (0x1 bytes), align: 0
-  Segment part 54.            Intra module refs:   Buttom1Pros::key_step1
+  Segment part 56.            Intra module refs:   Buttom1Pros::key_step1
     -------------------------------------------------------------------------
 DATA16_ID
   Relative segment, address: 5C1C - 5C1C (0x1 bytes), align: 0
-  Segment part 57.            Intra module refs:   Buttom2Pros::lastkey2
+  Segment part 59.            Intra module refs:   Buttom2Pros::lastkey2
     -------------------------------------------------------------------------
 DATA16_ID
   Relative segment, address: 5C1D - 5C1D (0x1 bytes), align: 0
-  Segment part 59.            Intra module refs:   Buttom2Pros::key_step2
+  Segment part 61.            Intra module refs:   Buttom2Pros::key_step2
     -------------------------------------------------------------------------
 DATA16_ID
   Relative segment, address: 5C1E - 5C1E (0x1 bytes), align: 0
-  Segment part 61.            Intra module refs:   Buttom2Pros::index2
+  Segment part 63.            Intra module refs:   Buttom2Pros::index2
     -------------------------------------------------------------------------
 DATA16_ID
   Relative segment, address: 5C1F - 5C1F (0x1 bytes), align: 0
-  Segment part 63.            Intra module refs:   Buttom3Pros::lastkey3
+  Segment part 65.            Intra module refs:   Buttom3Pros::lastkey3
     -------------------------------------------------------------------------
 DATA16_ID
   Relative segment, address: 5C20 - 5C20 (0x1 bytes), align: 0
-  Segment part 65.            Intra module refs:   Buttom3Pros::key_step3
+  Segment part 67.            Intra module refs:   Buttom3Pros::key_step3
     -------------------------------------------------------------------------
 DATA16_ID
   Relative segment, address: 5C21 - 5C21 (0x1 bytes), align: 0
-  Segment part 67.            Intra module refs:   Buttom3Pros::index3
+  Segment part 69.            Intra module refs:   Buttom3Pros::index3
     -------------------------------------------------------------------------
 DATA16_ID
   Relative segment, address: 5C22 - 5C22 (0x1 bytes), align: 0
-  Segment part 69.            Intra module refs:   Buttom4Pros::lastkey4
+  Segment part 71.            Intra module refs:   Buttom4Pros::lastkey4
     -------------------------------------------------------------------------
 DATA16_ID
   Relative segment, address: 5C23 - 5C23 (0x1 bytes), align: 0
-  Segment part 71.            Intra module refs:   Buttom4Pros::key_step4
+  Segment part 73.            Intra module refs:   Buttom4Pros::key_step4
     -------------------------------------------------------------------------
 DATA16_ID
   Relative segment, address: 5C24 - 5C24 (0x1 bytes), align: 0
-  Segment part 73.            Intra module refs:   Buttom4Pros::index4
+  Segment part 75.            Intra module refs:   Buttom4Pros::index4
     -------------------------------------------------------------------------
 DATA16_ID
   Relative segment, address: 5C25 - 5C25 (0x1 bytes), align: 0
-  Segment part 75.            Intra module refs:   SendData::sendstep
+  Segment part 77.            Intra module refs:   SendData::sendstep
 
     *************************************************************************
 
@@ -913,11 +928,11 @@ DATA16_ID
   SEGMENTS IN THE MODULE
   ======================
 <CODE> 1 (was CODE)
-  Relative segment, address: 66EE - 66EF (0x2 bytes), align: 1
+  Relative segment, address: 671A - 671B (0x2 bytes), align: 1
   Segment part 2.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           __DebugBreak            66EE            __exit (?__exit)
+           __DebugBreak            671A            __exit (?__exit)
 
     -------------------------------------------------------------------------
   LIBRARY MODULE, NAME : ?__exit
@@ -925,11 +940,11 @@ DATA16_ID
   SEGMENTS IN THE MODULE
   ======================
 <CODE> 1 (was CODE)
-  Relative segment, address: 6698 - 66AB (0x14 bytes), align: 1
+  Relative segment, address: 66C4 - 66D7 (0x14 bytes), align: 1
   Segment part 2.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           __exit                  6698            Segment part 6 (?_exit)
+           __exit                  66C4            Segment part 6 (?_exit)
                                                    _exit (?_exit)
                calls direct
 
@@ -939,14 +954,14 @@ DATA16_ID
   SEGMENTS IN THE MODULE
   ======================
 <CODE> 1 (was CODE)
-  Relative segment, address: 66E6, align: 1
+  Relative segment, address: 6712, align: 1
   Segment part 0.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           _exit                   66E6            exit (?exit)
+           _exit                   6712            exit (?exit)
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 66E6 - 66E9 (0x4 bytes), align: 1
+  Relative segment, address: 6712 - 6715 (0x4 bytes), align: 1
   Segment part 6.             Intra module refs:   _exit
 
     -------------------------------------------------------------------------
@@ -971,31 +986,31 @@ DATA16_ID
   Segment part 4.
     -------------------------------------------------------------------------
 CODE_I
-  Relative segment, address: 1C4C, align: 1
+  Relative segment, address: 1C4E, align: 1
   Segment part 5.
     -------------------------------------------------------------------------
 CODE_ID
-  Relative segment, address: 66F0, align: 1
+  Relative segment, address: 671C, align: 1
   Segment part 6.
     -------------------------------------------------------------------------
 DATA20_Z
-  Relative segment, address: 1C4C, align: 1
+  Relative segment, address: 1C4E, align: 1
   Segment part 7.
     -------------------------------------------------------------------------
 DATA20_I
-  Relative segment, address: 1C4C, align: 1
+  Relative segment, address: 1C4E, align: 1
   Segment part 8.
     -------------------------------------------------------------------------
 DATA20_ID
-  Relative segment, address: 66F0, align: 1
+  Relative segment, address: 671C, align: 1
   Segment part 9.
     -------------------------------------------------------------------------
 DATA20_C
-  Relative segment, address: 66F0, align: 1
+  Relative segment, address: 671C, align: 1
   Segment part 10.
     -------------------------------------------------------------------------
 DATA20_N
-  Relative segment, address: 1C4C, align: 1
+  Relative segment, address: 1C4E, align: 1
   Segment part 12.
     -------------------------------------------------------------------------
 CSTART
@@ -1017,6 +1032,8 @@ CSTART
                                                    UART_DATA (main)
                                                    Uindex (main)
                                                    blinkFlag (main)
+                                                   blinkOff (main)
+                                                   blinkOn (main)
                                                    checksum (main)
                                                    contral_step (main)
                                                    keytick (main)
@@ -1055,7 +1072,7 @@ CSTART
            ?cstart_end             5C4E 
     -------------------------------------------------------------------------
 CODE_ID
-  Relative segment, address: 66F0, align: 1
+  Relative segment, address: 671C, align: 1
   Segment part 27.            Intra module refs:   Segment part 5
 
     -------------------------------------------------------------------------
@@ -1076,11 +1093,11 @@ RESET
   SEGMENTS IN THE MODULE
   ======================
 <CODE> 1 (was CODE)
-  Relative segment, address: 66E2 - 66E5 (0x4 bytes), align: 1
+  Relative segment, address: 670E - 6711 (0x4 bytes), align: 1
   Segment part 2.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           exit                    66E2            Segment part 26 (?cstart)
+           exit                    670E            Segment part 26 (?cstart)
                calls direct
 
     -------------------------------------------------------------------------
@@ -1089,11 +1106,11 @@ RESET
   SEGMENTS IN THE MODULE
   ======================
 <CODE> 1 (was CODE)
-  Relative segment, address: 666C - 6683 (0x18 bytes), align: 1
+  Relative segment, address: 6698 - 66AF (0x18 bytes), align: 1
   Segment part 1.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           ?DivMod16u              666C            BlinkShow (main)
+           ?DivMod16u              6698            BlinkShow (main)
                                                    Buttom1Pros (main)
                                                    Buttom2Pros (main)
                                                    Buttom3Pros (main)
@@ -1107,11 +1124,11 @@ RESET
   SEGMENTS IN THE MODULE
   ======================
 <CODE> 1 (was CODE)
-  Relative segment, address: 66C0 - 66D1 (0x12 bytes), align: 1
+  Relative segment, address: 66EC - 66FD (0x12 bytes), align: 1
   Segment part 2.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           memcpy                  66C0            __data16_memcpy (?memzero)
+           memcpy                  66EC            __data16_memcpy (?memzero)
 
     -------------------------------------------------------------------------
   LIBRARY MODULE, NAME : ?memzero
@@ -1119,18 +1136,18 @@ RESET
   SEGMENTS IN THE MODULE
   ======================
 <CODE> 1 (was CODE)
-  Relative segment, address: 66D2 - 66E1 (0x10 bytes), align: 1
+  Relative segment, address: 66FE - 670D (0x10 bytes), align: 1
   Segment part 2.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           __data16_memzero        66D2            ?cstart_init_zero (?cstart)
+           __data16_memzero        66FE            ?cstart_init_zero (?cstart)
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 66EA - 66ED (0x4 bytes), align: 1
+  Relative segment, address: 6716 - 6719 (0x4 bytes), align: 1
   Segment part 3.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           __data16_memcpy         66EA            ?cstart_init_copy (?cstart)
+           __data16_memcpy         6716            ?cstart_init_copy (?cstart)
                calls direct
 
 
@@ -1165,20 +1182,20 @@ DATA16_AN                              015C - 015D               2   rel    0
                                        05CE - 05CE               1 
                                        05DC - 05DD               2 
 DATA16_I                               1C00 - 1C25              26   rel    1
-DATA16_Z                               1C26 - 1C4A              25   rel    1
-DATA20_I                                  1C4C                       rel    1
-DATA20_Z                                  1C4C                       rel    1
-DATA20_N                                  1C4C                       rel    1
-CODE_I                                    1C4C                       rel    1
+DATA16_Z                               1C26 - 1C4C              27   rel    1
+DATA20_I                                  1C4E                       rel    1
+DATA20_Z                                  1C4E                       rel    1
+DATA20_N                                  1C4E                       rel    1
+CODE_I                                    1C4E                       rel    1
 CSTACK                                 5B60 - 5BFF              A0   rel    1
 DATA16_C                                  5C00                       dse    0
 DATA16_ID                              5C00 - 5C25              26   rel    1
 CSTART                                 5C26 - 5C4D              28   rel    1
-ISR_CODE                               5C4E - 5DDB             18E   rel    1
-<CODE> 1                               5DDC - 66EF             914   rel    1
-DATA20_C                                  66F0                       rel    1
-DATA20_ID                                 66F0                       rel    1
-CODE_ID                                   66F0                       rel    1
+ISR_CODE                               5C4E - 5DD9             18C   rel    1
+<CODE> 1                               5DDA - 671B             942   rel    1
+DATA20_C                                  671C                       rel    1
+DATA20_ID                                 671C                       rel    1
+CODE_ID                                   671C                       rel    1
 INTVEC                                 FF80 - FFF3              74   com    1
 RESET                                  FFFE - FFFF               2   rel    1
 
@@ -1188,8 +1205,8 @@ RESET                                  FFFE - FFFF               2   rel    1
                 *                                      *
                 ****************************************
 
- 2 880 bytes of CODE  memory
-   235 bytes of DATA  memory (+ 57 absolute )
+ 2 924 bytes of CODE  memory
+   237 bytes of DATA  memory (+ 57 absolute )
     38 bytes of CONST memory
 
 Errors: none

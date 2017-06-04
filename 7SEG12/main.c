@@ -268,12 +268,15 @@ void Buttom1Pros(void)
         default:
           break;
         }
-        key_step1 = 2;
+        if(KeyLock == 0)
+        {
+          key_step1 = 2;
+        }
       }
     break;
     
   case 2:
-      if((key0to3 == 0xFF) && (KeyLock == 0))
+      if((key0to3 == 0xFF))
       {
         if((lastkey1 == 0xFE) || (lastkey1 == 0xFB) || (lastkey1 == 0xEF) || (lastkey1 == 0xBF))
         {
@@ -338,12 +341,15 @@ void Buttom2Pros(void)
         default:
           break;
         }
-        key_step2 = 2;
+        if(KeyLock == 0)
+        {
+          key_step2 = 2;
+        }
       }
     break;
     
   case 2:
-      if((key4to7 == 0xFF) && (KeyLock == 0))
+      if((key4to7 == 0xFF))
       {
         if((lastkey2 == 0xFE) || (lastkey2 == 0xFB) || (lastkey2 == 0xEF) || (lastkey2 == 0xBF))
         {
@@ -393,12 +399,15 @@ void Buttom3Pros(void)
         default:
           break;
         }
-        key_step3 = 2;
+        if(KeyLock == 0)
+        {
+          key_step3 = 2;
+        }
       }
     break;
     
   case 2:
-      if((key8to9 == 0xFF)  && (KeyLock == 0))
+      if((key8to9 == 0xFF))
       {
         if((lastkey3 == 0xFE))
         {
@@ -454,12 +463,15 @@ void Buttom4Pros(void)
           default:
             break;
         }
-        key_step4 = 2;
+        if(KeyLock == 0)
+        {
+          key_step4 = 2;
+        }
       }
     break;
     
   case 2:
-      if((key10to11 == 0xFF) && (KeyLock == 0))
+      if((key10to11 == 0xFF))
       {
         if(lastkey4 == 0xEF)
         {

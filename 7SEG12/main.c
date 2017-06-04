@@ -482,7 +482,7 @@ void Buttom4Pros(void)
           DATA[index4] ^= 1;
         }
         lastkey4 = 0xFF;
-        ClearData();
+        
         if(mStep == 1)
         {
           mStep = 2;
@@ -512,6 +512,12 @@ void SwitchINOUT(void)
       if(gg)
       {
         mStep = 3;
+        DATA[10] = 0;
+        DATA[11] = 0;
+        for(i = 0; i <= 8; i ++)
+        {
+          DATA[i] = 11;
+        }
         P2OUT &= ~BIT0;
         P2OUT |= BIT1| BIT2;
       }
@@ -636,6 +642,7 @@ void SendData(void)
       
       else
       {
+        ClearData();
         blinkcon = 0;
         sendstep = 1;
       }

@@ -19,4 +19,4 @@
 #define NUM9    (SEGA & SEGB & SEGC & SEGF & SEGG)
 #define DASH    (SEGG)
 #define NON     0xFF
-char number[12] = {NUM0, NUM1, NUM2, NUM3, NUM4, NUM5, NUM6, NUM7, NUM8, NUM9, DASH, NON};
+char number[12] = {NUM0, NUM1, NUM2, NUM3, NUM4, NUM5, NUM6, NUM7, NUM8, NUM9, DASH, 0x0FF};

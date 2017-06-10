@@ -16,10 +16,18 @@ void Buttom4Pros(void);
 void ClearData(void);
 void SwitchINOUT(void);
 void SendData(void);
+void flash_write(unsigned char index);
+char flash_read(char *ptr);
+void Data_proc(void);
+void copy_AtoC(void);
+void copy_BtoD(void);
+void Empty_Data(void);
+
+#define flash_ptr 0x1800
 
 unsigned char DATA[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0};
-unsigned char UART_DATA[13] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-unsigned char sendd[14] = {0x00};
+unsigned char UART_DATA[15] = {0x00};
+unsigned char sendd[15] = {0x00};
 unsigned char contral_step = 0;
 unsigned char systick = 0, keytick = 0;
 unsigned char Uindex = 0, uart_step = 1, checksum = 0x00;
@@ -29,6 +37,8 @@ unsigned char blinkFlag = 0;
 unsigned char blinkOn = 0;
 unsigned char blinkOff = 0;
 unsigned char KeyLock = 0;
+unsigned char getData = 0;
+char Dproc_step = 1;
 void main(void)
 {
   WDTCTL = WDTPW + WDTHOLD;
@@ -41,7 +51,36 @@ void main(void)
 
   while(1)
   {
+    switch(mStep)
+    {
+      case 1:
+        OpenShow();
+        Buttom4Pros();
+        SwitchINOUT();
+        break;
+        
+      case 2:
+        BlinkShow();
+        Buttom1Pros();
+        Buttom2Pros();
+        Buttom3Pros();
+        Buttom4Pros();
+        SwitchINOUT();
+        SendData();
+        break;
+        
+      case 3:
+        LEDShow();
+        Buttom4Pros();
+        SwitchINOUT();
+        SendData();
+        break;
+    }
     
+    if(getData == 1)
+    {
+      Data_proc();
+    }
   }
 }
 
@@ -78,7 +117,7 @@ void LEDIni(void)
   P8DIR |= (BIT7 | BIT6 | BIT5 | BIT4 | BIT3 | BIT2 | BIT1 | BIT0); //digit
   P9DIR |= (BIT7 | BIT6 | BIT5 | BIT4 | BIT3 | BIT2 | BIT1 | BIT0); //ten digit
 
-  P2OUT |= (BIT0 | BIT1 | BIT2 | BIT6);
+  P2OUT |= (BIT0 | BIT1 | BIT2 | BIT6 | BIT7);
   P4OUT &= ~(BIT5 | BIT4 | BIT3 | BIT2 | BIT1 | BIT0);
   P8OUT = (BIT6 | BIT5 | BIT4 | BIT3 | BIT2 | BIT1 | BIT0);
   P9OUT = (BIT6 | BIT5 | BIT4 | BIT3 | BIT2 | BIT1 | BIT0);
@@ -502,6 +541,11 @@ void Buttom4Pros(void)
         {
           mStep = 2;
         }
+        
+        else if(mStep == 3)
+        {
+          Empty_Data();
+        }
         key_step4 = 1;
       }
     break;
@@ -517,6 +561,14 @@ void ClearData(void)
   }
 }
 
+void Empty_Data(void)
+{
+  unsigned char i;
+  for(i = 0; i <= 8; i ++)
+  {
+    DATA[i] = 11;
+  }
+}
 void SwitchINOUT(void)
 {
   unsigned char i;
@@ -603,6 +655,7 @@ void SendData(void)
       if((keytick >= 10) && !temp)
       {
         sendstep = 3;
+        KeyLock = 1;
       }
       else if((keytick < 10) && temp)
       {
@@ -611,38 +664,7 @@ void SendData(void)
       break;
       
     case 3:
-      if(temp)
-      {
-        sendd[0] = 0xEC;
-        sendd[13] = 0xAA;
-        sendd[10] = DATA[10];
-        sendd[11] = DATA[11];
-        sendd[12] = DATA[0];
-        for(i = 0; i < 9; i ++)
-        {
-          sendd[i+1] = DATA[i];
-        }
-        
-        for(i = 1; i < 11; i ++)
-        {
-          sendd[12] ^= sendd[i];
-        }
-        sendstep = 4;
-      }
-      break;
-      
-    case 4:
-      for(i = 0; i < 13; i ++)
-      {
-        while (!(UCA0IFG&UCTXIFG));             // USCI_A0 TX buffer ready?
-        UCA0TXBUF = sendd[i];                  // TX -> RXed character
-      }
-      KeyLock = 1;
-      sendstep = 5;
-      break;
-      
-    case 5:
-      if(blinkcon < 30)
+      if(blinkcon < 14)
       {
         if(blinkFlag)
         {
@@ -668,19 +690,252 @@ void SendData(void)
       else
       {
         P2OUT |= BIT2;
-        ClearData();
+        
         blinkOn = 0;
         blinkOff = 0;
         blinkcon = 0;
-        KeyLock = 0;
-        sendstep = 1;
+        
+        sendstep = 4;
+      }
+      break;
+        
+    case 4:
+      if(temp)
+      {
+        if(mStep == 2)
+        {
+          sendd[0] = 0xEC;
+          for(i = 0; i < 13; i ++)
+          {
+            sendd[i+1] = DATA[i];
+          }
+          sendd[13] = sendd[1];
+        }
+        
+        else if(mStep == 3)
+        {
+          sendd[0] = 0xDC;
+          sendd[10] = 0x0A;
+          sendd[11] = DATA[10];
+          sendd[12] = DATA[11];
+          
+          for(i = 0; i < 9; i ++)
+          {
+            sendd[i+1] = 0;
+          }
+          sendd[13] = sendd[1];
+        }
+        
+        for(i = 2; i < 13; i ++)
+        {
+          sendd[13] ^= sendd[i];
+        }
+        sendd[14] = 0xAA;
+        sendstep = 5;
       }
       break;
       
+    case 5:
+      for(i = 0; i < 15; i ++)
+      {
+        while (!(UCA0IFG&UCTXIFG));             // USCI_A0 TX buffer ready?
+          UCA0TXBUF = sendd[i];                  // TX -> RXed character
+      }
+      if(mStep != 3)
+      {
+          ClearData();
+      }
+      KeyLock = 0;
+      sendstep = 1;
+      break;
+     
     default:
       break;
   }
 }
+
+void flash_write(unsigned char index)
+{
+  unsigned int i;
+  char *Flash_ptrA;                        // Flash pointer
+  char *Flash_ptrC;
+  char limit = index *9;
+  Flash_ptrA = (char *) 0x1800;
+  Flash_ptrC = (char *) 0x1900;
+  
+  __disable_interrupt();
+  FCTL3 = FWKEY;
+  FCTL1 = FWKEY + ERASE;                    // Set Erase bit                         // Clear Lock bit
+  *Flash_ptrA = 0;       // Dummy write to erase Flash segment
+  FCTL1 = FWKEY + WRT;                      // Set WRT bit for write operation
+  
+  for (i = 0; i < 180; i++)
+  {
+    if((i < limit) || (i > limit * 9))
+    {
+      Flash_ptrC =(char *) 0x1900 + i;
+      Flash_ptrA =(char *) 0x1800 + i;
+      *Flash_ptrA = *Flash_ptrC;          // copy value segment C to seg D
+    }
+  }
+  
+  Flash_ptrA = (char *) 0x1800 + (index * 9);
+  for(i = 0;i < 9;i ++)
+  {
+    while(FCTL3 & BUSY);
+    *Flash_ptrA = UART_DATA[i+1];                   // Write value to flash
+    Flash_ptrA ++;
+  }
+  FCTL1 = FWKEY;                            // Clear WRT bit
+  FCTL3 = FWKEY + LOCK;                     // Set LOCK bit
+  __enable_interrupt();
+}
+
+void copy_AtoC(void)
+{
+  unsigned int i;
+  char *Flash_ptrA;                        // Flash pointer
+  char *Flash_ptrC;
+  Flash_ptrA = (char *) 0x1800;
+  Flash_ptrC = (char *) 0x1900;
+  
+  __disable_interrupt();
+  FCTL3 = FWKEY;                            // Clear Lock bit
+  FCTL1 = FWKEY+ERASE;                      // Set Erase bit
+  *Flash_ptrC = 0;          // Dummy write to erase Flash seg D
+  FCTL1 = FWKEY+WRT;                        // Set WRT bit for write operation
+
+  for (i = 0; i < 128; i++)
+  {
+    *Flash_ptrC++ = *Flash_ptrA++;          // copy value segment C to seg D
+  }
+  
+  FCTL1 = FWKEY;                            // Clear WRT bit
+  FCTL3 = FWKEY + LOCK;
+  __enable_interrupt();
+}
+
+void copy_BtoD(void)
+{
+  unsigned int i;
+  char *Flash_ptrB;                        // Flash pointer
+  char *Flash_ptrD;
+  Flash_ptrB = (char *) 0x1880;
+  Flash_ptrD = (char *) 0x1980;
+
+  __disable_interrupt();
+  FCTL3 = FWKEY;                            // Clear Lock bit
+  FCTL1 = FWKEY+ERASE;                      // Set Erase bit
+  *Flash_ptrD = 0;          // Dummy write to erase Flash seg D
+  FCTL1 = FWKEY+WRT;                        // Set WRT bit for write operation
+
+  for (i = 0; i < 52; i++)
+  {
+    *Flash_ptrD++ = *Flash_ptrB++;          // copy value segment C to seg D
+  }
+  
+  FCTL1 = FWKEY;                            // Clear WRT bit
+  FCTL3 = FWKEY + LOCK;
+  __enable_interrupt();
+}
+
+char flash_read(char *ptr)
+{
+  return *ptr;
+}
+
+void Data_proc(void)
+{
+  unsigned char tem = 0;
+  switch(Dproc_step)
+  {
+    case 1:
+      checksum = UART_DATA[1];
+      for(unsigned char i = 2; i < 13; i ++)
+        {
+          checksum ^= UART_DATA[i];
+        }
+        
+        if(checksum == UART_DATA[13])
+        {            
+          if((UART_DATA[0] == 0xEC))
+          {
+            contral_step = 0;
+            Dproc_step = 2;
+          }
+          
+          else if((UART_DATA[0] == 0xDC))
+          {
+            Dproc_step = 3;
+          }
+        }
+      
+        else
+        {
+          Dproc_step = 1;
+          getData = 0;
+        }
+      break;
+      
+    case 2:
+      copy_BtoD();
+      Dproc_step = 5;
+      break;
+      
+  case 3:
+    sendd[0] = 0xEC;
+    for(unsigned char i = 0; i < 9; i++)
+    {
+      tem = flash_read((char *)(((UART_DATA[12] *10 + UART_DATA[11])*9 +i)+ 0x1800));
+      if(tem == 0xFF)
+      {
+        sendd[i+1] = 0;
+      }
+      else
+      {
+        sendd[i+1] = tem;
+      }
+    }
+    sendd[10] = DATA[9];
+    sendd[11] = DATA[10];
+    sendd[12] = DATA[11];
+    sendd[13] = sendd[1];
+    for(unsigned char i=2;i<13;i++)
+    {
+      sendd[13] ^= sendd[i];
+    }
+    sendd[14] = 0xAA;
+    for(unsigned char i = 0; i < 15; i ++)
+      {
+        while (!(UCA0IFG&UCTXIFG));             // USCI_A0 TX buffer ready?
+          UCA0TXBUF = sendd[i];                  // TX -> RXed character
+      }
+    Dproc_step = 1;
+    getData = 0;
+    break;
+    
+  case 5:
+     copy_AtoC(); 
+     Dproc_step = 6;
+    break;
+    
+  case 6:
+    flash_write(UART_DATA[12] *10 + UART_DATA[11]);
+    Dproc_step = 7;
+    break;
+    
+  case 7:
+    for(unsigned char j = 0; j < 9; j ++)
+    {
+      DATA[j] = UART_DATA[j+1];
+    } 
+    Dproc_step = 1;
+    getData = 0;
+    break;
+    
+  }
+}
+
 #pragma vector=TIMER1_A0_VECTOR
 __interrupt void TIMER_ISR(void)
 {
@@ -697,111 +952,56 @@ __interrupt void TIMER_ISR(void)
     blinkFlag ^= 1;
     tick100ms = 0;
   }
-  switch(mStep)
-  {
-    case 1:
-      OpenShow();
-      Buttom4Pros();
-      SwitchINOUT();
-      break;
-      
-    case 2:
-      BlinkShow();
-      Buttom1Pros();
-      Buttom2Pros();
-      Buttom3Pros();
-      Buttom4Pros();
-      SwitchINOUT();
-      SendData();
-      break;
-      
-    case 3:
-      LEDShow();
-      Buttom4Pros();
-      SwitchINOUT();
-      break;
-  }
 }
+
+
 
 #pragma vector=USCI_A0_VECTOR
 __interrupt void USCI_A0_ISR(void)
 {
-  switch(uart_step)
+  switch(__even_in_range(UCA0IV,4))
   {
-    case 1:
-      if(UCA0RXBUF == 0xEC)
-      {
-        uart_step = 2;
-      }
-      
-      else if(UCA0RXBUF == 0xBB)
-      {
-        uart_step = 4;
-      }
-      break;
-      
-    case 2:
-      if(UCA0RXBUF == 0xAA)
-      {
-        checksum = UART_DATA[0];
-        Uindex = 0;
-        uart_step = 3;
-      }
-      
-      else if(Uindex > 13)
-      {
-        Uindex = 0;
-        uart_step = 1;
-      }
-      
-      else
-      {
-        UART_DATA[Uindex] =  UCA0RXBUF;
-        Uindex ++;
-      }
-      break;
-      
-    case 3:
-      for(unsigned char i = 1; i < 9; i ++)
-      {
-        checksum ^= UART_DATA[i];
-      }
-      
-      if(checksum == UART_DATA[12])
-      {
-        //DATA[10] = UART_DATA[10];
-        //DATA[11] = UART_DATA[11];
-        for(unsigned char j = 0; j < 9; j ++)
+    case 0:break;                             // Vector 0 - no interrupt
+    case 2:   
+    switch(uart_step)
+    {
+      case 1:
+        if(UCA0RXBUF == 0xEC)
         {
-          DATA[j] = UART_DATA[j];
+          UART_DATA[0] =  0xEC;
+          Uindex = 1;
+          uart_step = 2;
         }
-        uart_step = 1;
-      }
-      break;
-      
-    case 4:
-      sendd[0] = 0xEC;
-      sendd[13] = 0xAA;
-      sendd[10] = DATA[10];
-      sendd[11] = DATA[11];
-      sendd[12] = DATA[0];
-      
-      for(unsigned char i = 0; i < 9; i ++)
-      {
-        sendd[i+1] = DATA[i];
-      }
-         
-      for(unsigned char i = 1; i < 11; i ++)
-      {
-        sendd[12] ^= sendd[i];
-      }
-
-         
-      for(unsigned char i = 0; i < 13; i ++)
-      {
-        while (!(UCA0IFG&UCTXIFG));             // USCI_A0 TX buffer ready?
-        UCA0TXBUF = sendd[i];                  // TX -> RXed character
-      }
-      uart_step = 1;
+        else if(UCA0RXBUF == 0xDC)
+        {
+          UART_DATA[0] =  0xDC;
+          Uindex = 1;
+          uart_step = 2;
+        }
+        break;
+        
+      case 2:
+        if(UCA0RXBUF == 0xAA)
+        {
+          UART_DATA[Uindex] = 0xAA;
+          Uindex = 1;
+          uart_step = 1;
+          getData = 1;
+        }
+        
+        else
+        {
+          UART_DATA[Uindex] =  UCA0RXBUF;
+          Uindex ++;
+        }
+        
+        if(Uindex > 14)
+        {
+          Uindex = 0;
+          uart_step = 1;
+        }
+        break;
+    } 
+    break;
   }
 }

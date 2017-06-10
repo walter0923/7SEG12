@@ -28,7 +28,7 @@
 
 "fet" 
 
-"--erase_main" 
+"--erase_main_and_info" 
 
 "--derivative" 
 

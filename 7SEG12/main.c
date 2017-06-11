@@ -37,8 +37,11 @@ unsigned char blinkFlag = 0;
 unsigned char blinkOn = 0;
 unsigned char blinkOff = 0;
 unsigned char KeyLock = 0;
+unsigned char KeyLock4 = 0;
 unsigned char getData = 0;
 char Dproc_step = 1;
+unsigned char BF = 0;
+
 void main(void)
 {
   WDTCTL = WDTPW + WDTHOLD;
@@ -195,16 +198,24 @@ void BlinkShow(void)
       
     case 5:
       P4OUT = BIT5;
-      if(blinkFlag)
+      if(BF == 1)
+      {
+        if(blinkFlag)
+        {
+          P8OUT = number[DATA[10]];                      //show digit
+          P9OUT = number[DATA[11]];                  //show ten digit
+        }
+    
+        else
+        {
+          P8OUT = 0xFF;                      //show digit
+          P9OUT = 0xFF;                  //show ten digit
+        }
+      }
+      else
       {
         P8OUT = number[DATA[10]];                      //show digit
         P9OUT = number[DATA[11]];                  //show ten digit
-      }
-  
-      else
-      {
-        P8OUT = 0xFF;                      //show digit
-        P9OUT = 0xFF;                  //show ten digit
       }
       break;
       
@@ -502,7 +513,7 @@ void Buttom4Pros(void)
           default:
             break;
         }
-        if(KeyLock == 0)
+        if(KeyLock4 == 0)
         {
           key_step4 = 2;
         }
@@ -516,18 +527,27 @@ void Buttom4Pros(void)
         {
           DATA[index4] ++ ;
           DATA[index4] %= 10;
+          
+          if((DATA[11] == 0) && (DATA[10] == 0))
+          {
+            DATA[index4] = 1 ;
+          }
         }
         
         else if(lastkey4 == 0xDF)
         {
-          if(DATA[index4] == 0)
-          {
-            DATA[index4] = 9;
-          }
+            if(DATA[index4] == 0)
+            {
+              DATA[index4] = 9;
+            }
             
           else
           {
             DATA[index4] --;
+            if(((DATA[11] == 0) && (DATA[10] == 0)))
+            {
+              DATA[index4] = 1;
+            }
           }
         }
         
@@ -538,7 +558,7 @@ void Buttom4Pros(void)
         lastkey4 = 0xFF;
         
         if(mStep == 1)
-        {
+        { 
           mStep = 2;
         }
         
@@ -546,6 +566,17 @@ void Buttom4Pros(void)
         {
           Empty_Data();
         }
+        if((BF == 0) && (mStep == 2))
+        {
+          ClearData();
+          KeyLock = 0;
+          BF = 1;
+        }
+        /*else
+        {
+          KeyLock = 1;
+          BF = 0;
+        }*/
         key_step4 = 1;
       }
     break;
@@ -656,6 +687,7 @@ void SendData(void)
       {
         sendstep = 3;
         KeyLock = 1;
+        KeyLock4 = 1;
       }
       else if((keytick < 10) && temp)
       {
@@ -741,11 +773,14 @@ void SendData(void)
         while (!(UCA0IFG&UCTXIFG));             // USCI_A0 TX buffer ready?
           UCA0TXBUF = sendd[i];                  // TX -> RXed character
       }
-      if(mStep != 3)
+      BF = 0;
+      /*if(mStep != 3)
       {
           ClearData();
-      }
-      KeyLock = 0;
+      }*/
+      BF = 0;
+      KeyLock4 = 0;
+      KeyLock = 1;
       sendstep = 1;
       break;
      
@@ -889,7 +924,7 @@ void Data_proc(void)
       tem = flash_read((char *)(((UART_DATA[12] *10 + UART_DATA[11])*9 +i)+ 0x1800));
       if(tem == 0xFF)
       {
-        sendd[i+1] = 0;
+        sendd[i+1] = 10;
       }
       else
       {
@@ -927,7 +962,7 @@ void Data_proc(void)
   case 7:
     for(unsigned char j = 0; j < 9; j ++)
     {
-      DATA[j] = UART_DATA[j+1];
+        DATA[j] = UART_DATA[j+1];
     } 
     Dproc_step = 1;
     getData = 0;
